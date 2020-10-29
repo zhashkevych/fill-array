@@ -1,17 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"log"
 )
-
-
 
 const (
 	rowsCount    = 5
 	columnsCount = 5
-
-	randomLimit = 100
+	randomLimit  = 100
 )
 
 func main() {
@@ -30,9 +26,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	array.Fill(randomIntegers)
+	if err := array.Fill(randomIntegers); err != nil {
+		log.Fatal(err)
+	}
 
-	for rowIndex, rows := range array.Get() {
-		fmt.Printf("%d. %v\n", rowIndex+1, rows)
+	if err := array.Print(); err != nil {
+		log.Fatal(err)
 	}
 }

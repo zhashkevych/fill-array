@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestIntArray_Fill(t *testing.T) {
 	testTable := []struct {
@@ -75,6 +78,62 @@ func TestIntArray_Fill(t *testing.T) {
 
 			if err == nil && testCase.wantFillErr {
 				t.Fatal("Initialization Error was expected, but got nil")
+			}
+		})
+	}
+}
+
+func TestIntArray_Get(t *testing.T) {
+	testTable := []struct {
+		name         string
+		sizeX, sizeY int
+		values       []int
+		result       [][]int
+		wantGetErr   bool
+	}{
+		{
+			name:   "Ok",
+			sizeX:  2,
+			sizeY:  2,
+			values: []int{1, 2, 3, 4},
+			result: [][]int{
+				{1, 2},
+				{3., 4},
+			},
+		},
+		{
+			name:       "Empty Array",
+			sizeX:      2,
+			sizeY:      2,
+			wantGetErr: true,
+		},
+	}
+
+	for _, testCase := range testTable {
+		t.Run(testCase.name, func(t *testing.T) {
+			arr, _ := NewIntArray(testCase.sizeX, testCase.sizeY)
+
+			if testCase.wantGetErr {
+				_, err := arr.Get()
+				if err == nil {
+					t.Fatal("Expected error but got nil")
+				}
+
+				t.Skip("Ok")
+			}
+
+			err := arr.Fill(testCase.values)
+			if err != nil {
+				t.Fatal("Unexpected Fill error")
+			}
+
+			res, err := arr.Get()
+			if err != nil {
+				t.Fatal("Unexpected Get error")
+			}
+
+			if !reflect.DeepEqual(res, testCase.result) {
+				t.Fatalf("Incorrect Result. Want %v, Got %v", testCase.result, res)
 			}
 		})
 	}

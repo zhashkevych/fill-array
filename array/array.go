@@ -1,6 +1,9 @@
 package main
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type IntArray struct {
 	sizeX int
@@ -38,6 +41,22 @@ func (a *IntArray) Fill(values []int) error {
 	return nil
 }
 
-func (a *IntArray) Get() [][]int {
-	return a.arr
+func (a *IntArray) Get() ([][]int, error) {
+	if a.arr == nil {
+		return nil, errors.New("array is not filled with values")
+	}
+
+	return a.arr, nil
+}
+
+func (a *IntArray) Print() error {
+	if a.arr == nil {
+		return errors.New("array is not filled with values")
+	}
+
+	for rowIndex, rows := range a.arr {
+		fmt.Printf("%d. %v\n", rowIndex+1, rows)
+	}
+
+	return nil
 }
