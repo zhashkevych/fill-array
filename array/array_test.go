@@ -83,7 +83,7 @@ func TestIntArray_Fill(t *testing.T) {
 	}
 }
 
-func TestIntArray_Get(t *testing.T) {
+func TestIntArray_get(t *testing.T) {
 	testTable := []struct {
 		name         string
 		sizeX, sizeY int
@@ -114,7 +114,7 @@ func TestIntArray_Get(t *testing.T) {
 			arr, _ := NewIntArray(testCase.sizeX, testCase.sizeY)
 
 			if testCase.wantGetErr {
-				_, err := arr.Get()
+				_, err := arr.get()
 				if err == nil {
 					t.Fatal("Expected error but got nil")
 				}
@@ -127,9 +127,9 @@ func TestIntArray_Get(t *testing.T) {
 				t.Fatal("Unexpected Fill error")
 			}
 
-			res, err := arr.Get()
+			res, err := arr.get()
 			if err != nil {
-				t.Fatal("Unexpected Get error")
+				t.Fatal("Unexpected get error")
 			}
 
 			if !reflect.DeepEqual(res, testCase.result) {

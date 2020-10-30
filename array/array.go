@@ -41,7 +41,7 @@ func (a *IntArray) Fill(values []int) error {
 	return nil
 }
 
-func (a *IntArray) Get() ([][]int, error) {
+func (a *IntArray) get() ([][]int, error) {
 	if a.arr == nil {
 		return nil, errors.New("array is not filled with values")
 	}
@@ -50,11 +50,12 @@ func (a *IntArray) Get() ([][]int, error) {
 }
 
 func (a *IntArray) Print() error {
-	if a.arr == nil {
-		return errors.New("array is not filled with values")
+	arr, err := a.get()
+	if err != nil {
+		return err
 	}
 
-	for rowIndex, rows := range a.arr {
+	for rowIndex, rows := range arr {
 		fmt.Printf("%d. %v\n", rowIndex+1, rows)
 	}
 

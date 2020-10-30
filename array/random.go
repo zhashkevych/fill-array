@@ -14,7 +14,7 @@ type GetUniqueRandomIntegersInput struct {
 }
 
 func (i GetUniqueRandomIntegersInput) Validate() error {
-	if i.SizeX <= 0  || i.SizeY <= 0 {
+	if i.SizeX <= 0 || i.SizeY <= 0 {
 		return errors.New("array length can't be negative or 0")
 	}
 
@@ -22,7 +22,7 @@ func (i GetUniqueRandomIntegersInput) Validate() error {
 		return errors.New("random limit can't be 0")
 	}
 
-	if i.RandomLimit < i.SizeX * i.SizeY {
+	if i.RandomLimit < i.SizeX*i.SizeY {
 		return errors.New(
 			fmt.Sprintf("can't generate unique numbers with limit %d for %dx%d sized array",
 				i.RandomLimit, i.SizeX, i.SizeY))
@@ -32,14 +32,14 @@ func (i GetUniqueRandomIntegersInput) Validate() error {
 }
 
 type Randomizer struct {
-	usedValues map[interface{}]bool
+	usedIntegers map[int]bool
 }
 
 func NewRandomizer() *Randomizer {
 	rand.Seed(time.Now().Unix())
 
 	return &Randomizer{
-		usedValues: make(map[interface{}]bool),
+		usedIntegers: make(map[int]bool),
 	}
 }
 
@@ -53,19 +53,19 @@ func (r *Randomizer) GetUniqueRandomIntegers(input GetUniqueRandomIntegersInput)
 	numbersCount := input.SizeX * input.SizeY
 	result := make([]int, 0)
 
-	for i := 0; len(r.usedValues) < numbersCount; i++ {
-		r.usedValues[r.getRandomInt(input.RandomLimit)] = true
+	for i := 0; len(r.usedIntegers) < numbersCount; i++ {
+		r.usedIntegers[r.getRandomInt(input.RandomLimit)] = true
 	}
 
-	for num := range r.usedValues {
-		result = append(result, num.(int))
+	for num := range r.usedIntegers {
+		result = append(result, num)
 	}
 
 	return result, nil
 }
 
 func (r *Randomizer) reset() {
-	r.usedValues = make(map[interface{}]bool)
+	r.usedIntegers = make(map[int]bool)
 }
 
 func (r *Randomizer) getRandomInt(limit int) int {
