@@ -5,13 +5,61 @@ import (
 	"testing"
 )
 
+func TestNewIntArray(t *testing.T) {
+	testTable := []struct {
+		name         string
+		sizeX, sizeY int
+		wantErr      bool
+	}{
+		{
+			name:  "Ok",
+			sizeX: 2,
+			sizeY: 2,
+		},
+		{
+			name:    "SizeX is 0",
+			sizeX:   0,
+			wantErr: true,
+		},
+		{
+			name:    "SizeX is Negative",
+			sizeX:   -1,
+			wantErr: true,
+		},
+		{
+			name:    "SizeY is 0",
+			sizeX:   2,
+			sizeY:   0,
+			wantErr: true,
+		},
+		{
+			name:    "SizeY is Negative",
+			sizeX:   2,
+			sizeY:   -2,
+			wantErr: true,
+		},
+	}
+
+	for _, testCase := range testTable {
+		t.Run(testCase.name, func(t *testing.T) {
+			_, err := NewIntArray(testCase.sizeX, testCase.sizeY)
+			if err != nil && !testCase.wantErr {
+				t.Fatalf("Unexpected error: %s", err.Error())
+			}
+
+			if err == nil && testCase.wantErr {
+				t.Fatal("Error was expected, but got nil")
+			}
+		})
+	}
+}
+
 func TestIntArray_Fill(t *testing.T) {
 	testTable := []struct {
 		name         string
 		sizeX, sizeY int
 		values       []int
-		wantInitErr  bool
-		wantFillErr  bool
+		wantErr      bool
 	}{
 		{
 			name:  "Ok",
@@ -22,61 +70,30 @@ func TestIntArray_Fill(t *testing.T) {
 			},
 		},
 		{
-			name:        "SizeX is 0",
-			sizeX:       0,
-			wantInitErr: true,
+			name:    "Values Array Has Less Elements",
+			sizeX:   2,
+			sizeY:   2,
+			values:  []int{1, 2, 3},
+			wantErr: true,
 		},
 		{
-			name:        "SizeX is Negative",
-			sizeX:       -1,
-			wantInitErr: true,
-		},
-		{
-			name:        "SizeY is 0",
-			sizeX:       2,
-			sizeY:       0,
-			wantInitErr: true,
-		},
-		{
-			name:        "SizeY is Negative",
-			sizeX:       2,
-			sizeY:       -2,
-			wantInitErr: true,
-		},
-		{
-			name:        "Values Array Has Less Elements",
-			sizeX:       2,
-			sizeY:       2,
-			values:      []int{1, 2, 3},
-			wantFillErr: true,
+			name:    "Values Array Has More Elements",
+			sizeX:   2,
+			sizeY:   2,
+			values:  []int{1, 2, 3, 4, 5, 6, 7},
+			wantErr: true,
 		},
 	}
 
 	for _, testCase := range testTable {
 		t.Run(testCase.name, func(t *testing.T) {
-			intArray, err := NewIntArray(testCase.sizeX, testCase.sizeY)
-			if err != nil && !testCase.wantInitErr {
-				t.Fatal("Unexpected Initialization Error")
-			}
-
-			if err != nil && testCase.wantInitErr {
-				t.Skip("Ok")
-			}
-
-			if err == nil && testCase.wantInitErr {
-				t.Fatal("Initialization Error was expected, but got nil")
-			}
-
-			err = intArray.Fill(testCase.values)
-			if err != nil && !testCase.wantFillErr {
+			intArray, _ := NewIntArray(testCase.sizeX, testCase.sizeY)
+			err := intArray.Fill(testCase.values)
+			if err != nil && !testCase.wantErr {
 				t.Fatal("Unexpected Fill Error")
 			}
 
-			if err != nil && testCase.wantFillErr {
-				t.Skip("Ok")
-			}
-
-			if err == nil && testCase.wantFillErr {
+			if err == nil && testCase.wantErr {
 				t.Fatal("Initialization Error was expected, but got nil")
 			}
 		})
