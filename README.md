@@ -1,21 +1,21 @@
-# Intervew Tasks
+# Coding Interview Challenge (Fill Array)
 
-## 1. Fill Array
-Need to fill 5x5 array with random, unique integers in range 0-100
+## Task Description
+
+You need to implement logic that fills 5x5 array with <b>random unique</b> integers in range 0-100.
+
+Keep in mind, that this requirements can change in future, so you should design code that can easily adapt to new set of rules.
+
+Code should be testable & production-ready.
+
+## Solution is implemented using Go (1.15)
 
 ### Build & Run
 ```
-cd ./array
-go build && ./array
+make run
 ```
 
 ### Test
 ```
-cd ./array
-go test -v 
-```
-
-### Show Test Coverage
-```
-go test ./... -coverprofile cover.out
+make test
 ```
