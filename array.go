@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 )
 
 type IntArray struct {
@@ -20,7 +19,7 @@ func NewIntArray(sizeX int, sizeY int) (*IntArray, error) {
 }
 
 func (a *IntArray) Fill(values []int) error {
-	if len(values) != a.sizeX*a.sizeY {
+	if len(values) < a.sizeX*a.sizeY {
 		return errors.New("values array has less elements than target array")
 	}
 
@@ -41,23 +40,10 @@ func (a *IntArray) Fill(values []int) error {
 	return nil
 }
 
-func (a *IntArray) get() ([][]int, error) {
+func (a *IntArray) Get() ([][]int, error) {
 	if a.arr == nil {
 		return nil, errors.New("array is not filled with values")
 	}
 
 	return a.arr, nil
-}
-
-func (a *IntArray) Print() error {
-	arr, err := a.get()
-	if err != nil {
-		return err
-	}
-
-	for rowIndex, rows := range arr {
-		fmt.Printf("%d. %v\n", rowIndex+1, rows)
-	}
-
-	return nil
 }

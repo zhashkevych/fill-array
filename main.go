@@ -30,7 +30,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := array.Print(); err != nil {
+	if err := Print(array); err != nil {
 		log.Fatal(err)
 	}
 }

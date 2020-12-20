@@ -32,14 +32,14 @@ func (i GetUniqueRandomIntegersInput) Validate() error {
 }
 
 type Randomizer struct {
-	usedIntegers map[int]bool
+	uniqueIntegers map[int]bool
 }
 
 func NewRandomizer() *Randomizer {
 	rand.Seed(time.Now().Unix())
 
 	return &Randomizer{
-		usedIntegers: make(map[int]bool),
+		uniqueIntegers: make(map[int]bool),
 	}
 }
 
@@ -53,11 +53,11 @@ func (r *Randomizer) GetUniqueRandomIntegers(input GetUniqueRandomIntegersInput)
 	numbersCount := input.SizeX * input.SizeY
 	result := make([]int, 0)
 
-	for i := 0; len(r.usedIntegers) < numbersCount; i++ {
-		r.usedIntegers[r.getRandomInt(input.RandomLimit)] = true
+	for len(r.uniqueIntegers) < numbersCount {
+		r.uniqueIntegers[r.getRandomInt(input.RandomLimit)] = true
 	}
 
-	for num := range r.usedIntegers {
+	for num := range r.uniqueIntegers {
 		result = append(result, num)
 	}
 
@@ -65,7 +65,7 @@ func (r *Randomizer) GetUniqueRandomIntegers(input GetUniqueRandomIntegersInput)
 }
 
 func (r *Randomizer) reset() {
-	r.usedIntegers = make(map[int]bool)
+	r.uniqueIntegers = make(map[int]bool)
 }
 
 func (r *Randomizer) getRandomInt(limit int) int {

@@ -76,13 +76,6 @@ func TestIntArray_Fill(t *testing.T) {
 			values:  []int{1, 2, 3},
 			wantErr: true,
 		},
-		{
-			name:    "Values Array Has More Elements",
-			sizeX:   2,
-			sizeY:   2,
-			values:  []int{1, 2, 3, 4, 5, 6, 7},
-			wantErr: true,
-		},
 	}
 
 	for _, testCase := range testTable {
@@ -131,7 +124,7 @@ func TestIntArray_get(t *testing.T) {
 			arr, _ := NewIntArray(testCase.sizeX, testCase.sizeY)
 
 			if testCase.wantGetErr {
-				_, err := arr.get()
+				_, err := arr.Get()
 				if err == nil {
 					t.Fatal("Expected error but got nil")
 				}
@@ -144,9 +137,9 @@ func TestIntArray_get(t *testing.T) {
 				t.Fatal("Unexpected Fill error")
 			}
 
-			res, err := arr.get()
+			res, err := arr.Get()
 			if err != nil {
-				t.Fatal("Unexpected get error")
+				t.Fatal("Unexpected Get error")
 			}
 
 			if !reflect.DeepEqual(res, testCase.result) {
