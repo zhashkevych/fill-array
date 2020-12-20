@@ -2,7 +2,7 @@
 .SILENT:
 
 build:
-	go build -o ./.bin/array main.go
+	go build -o ./.bin/array .
 
 run: build
 	./.bin/array
